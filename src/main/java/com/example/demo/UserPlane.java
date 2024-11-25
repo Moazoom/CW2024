@@ -17,6 +17,7 @@ public class UserPlane extends FighterPlane {
 	public UserPlane(int initialHealth) {
 		super(IMAGE_NAME, IMAGE_HEIGHT, INITIAL_X_POSITION, INITIAL_Y_POSITION, initialHealth);
 		velocityMultiplier = 0;
+		numberOfKills = 0;
 	}
 	
 	@Override

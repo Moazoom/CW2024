@@ -60,7 +60,9 @@ public class Boss extends FighterPlane {
 	public void takeDamage() {
 		if (!isShielded) {
 			super.takeDamage();
+			System.out.println("boss health: " + getHealth());
 		}
+		else System.out.println("boss is shielded");
 	}
 
 	private void initializeMovePattern() {
