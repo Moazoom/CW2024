@@ -6,7 +6,8 @@ import javafx.scene.image.ImageView;
 public class ShieldImage extends ImageView {
 	
 	private static final String IMAGE_NAME = "/com/example/demo/images/shield.png";
-	private static final int SHIELD_SIZE = 200;
+	private static final int SHIELD_WIDTH = 400;
+	private static final int SHIELD_HEIGHT = 150;
 	
 	public ShieldImage(double xPosition, double yPosition) {
 		this.setLayoutX(xPosition);
@@ -14,8 +15,8 @@ public class ShieldImage extends ImageView {
 		//this.setImage(new Image(IMAGE_NAME));
 		this.setImage(new Image(getClass().getResource(IMAGE_NAME).toExternalForm()));
 		this.setVisible(false);
-		this.setFitHeight(SHIELD_SIZE);
-		this.setFitWidth(SHIELD_SIZE);
+		this.setFitHeight(SHIELD_HEIGHT);
+		this.setFitWidth(SHIELD_WIDTH);
 		System.out.println("shield created");
 	}
 
