@@ -18,14 +18,17 @@ public class LevelViewLevelTwo extends LevelView {
 	
 	private void addImagesToRoot() {
 		root.getChildren().addAll(shieldImage);
+		System.out.println("shield added to root");
 	}
 	
 	public void showShield() {
 		shieldImage.showShield();
+		System.out.println("shield is up");
 	}
 
 	public void hideShield() {
 		shieldImage.hideShield();
+		System.out.println("shield down");
 	}
 
 }

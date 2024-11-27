@@ -40,4 +40,13 @@ public class LevelTwo extends LevelParent {
 		return levelView;
 	}
 
+	@Override
+	protected void updateLevelView() {
+		levelView.removeHearts(getUser().getHealth());
+		if (boss.getShielded()){
+			levelView.showShield();
+		}
+		else levelView.hideShield();
+	}
+
 }

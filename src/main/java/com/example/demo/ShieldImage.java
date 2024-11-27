@@ -16,6 +16,7 @@ public class ShieldImage extends ImageView {
 		this.setVisible(false);
 		this.setFitHeight(SHIELD_SIZE);
 		this.setFitWidth(SHIELD_SIZE);
+		System.out.println("shield created");
 	}
 
 	public void showShield() {

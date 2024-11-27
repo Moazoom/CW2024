@@ -47,7 +47,7 @@ public abstract class LevelParent extends Observable {
 		this.screenHeight = screenHeight;
 		this.screenWidth = screenWidth;
 		this.enemyMaximumYPosition = screenHeight - SCREEN_HEIGHT_ADJUSTMENT;
-		this.levelView = instantiateLevelView();
+		// this.levelView = instantiateLevelView();
 		this.currentNumberOfEnemies = 0;
 		initializeTimeline();
 		friendlyUnits.add(user);
@@ -63,6 +63,7 @@ public abstract class LevelParent extends Observable {
 
 	public Scene initializeScene() {
 		initializeBackground();
+		this.levelView = instantiateLevelView(); // pluhh
 		initializeFriendlyUnits();
 		levelView.showHeartDisplay();
 		return scene;
@@ -118,6 +119,7 @@ public abstract class LevelParent extends Observable {
 			}
 		});
 		root.getChildren().add(background);
+		System.out.println("bg added to root");
 	}
 
 	private void fireProjectile() {
@@ -191,7 +193,7 @@ public abstract class LevelParent extends Observable {
 		}
 	}
 
-	private void updateLevelView() {
+	protected void updateLevelView() {
 		levelView.removeHearts(user.getHealth());
 	}
 
