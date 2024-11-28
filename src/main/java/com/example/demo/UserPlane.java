@@ -13,6 +13,8 @@ public class UserPlane extends FighterPlane {
 	private static final int PROJECTILE_Y_POSITION_OFFSET = 20;
 	private int velocityMultiplier;
 	private int numberOfKills;
+	public boolean isFiring = false;
+	public int fireDelay = 0;
 
 	public UserPlane(int initialHealth) {
 		super(IMAGE_NAME, IMAGE_HEIGHT, INITIAL_X_POSITION, INITIAL_Y_POSITION, initialHealth);

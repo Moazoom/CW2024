@@ -84,6 +84,7 @@ public abstract class LevelParent extends Observable {
 	private void updateScene() {
 		spawnEnemyUnits();
 		updateActors();
+		userFire(); // new, mine
 		generateEnemyFire();
 		updateNumberOfEnemies();
 		handleEnemyPenetration();
@@ -111,17 +112,28 @@ public abstract class LevelParent extends Observable {
 				KeyCode kc = e.getCode();
 				if (kc == KeyCode.UP) user.moveUp();
 				if (kc == KeyCode.DOWN) user.moveDown();
-				if (kc == KeyCode.SPACE) fireProjectile();
+				if (kc == KeyCode.SPACE) user.isFiring = true;
 			}
 		});
 		background.setOnKeyReleased(new EventHandler<KeyEvent>() {
 			public void handle(KeyEvent e) {
 				KeyCode kc = e.getCode();
 				if (kc == KeyCode.UP || kc == KeyCode.DOWN) user.stop();
+				if (kc == KeyCode.SPACE) user.isFiring = false;
 			}
 		});
 		root.getChildren().add(background);
 		System.out.println("bg added to root");
+	}
+
+	private void userFire(){
+		if (user.isFiring) {
+			if (user.fireDelay > 1) {
+				fireProjectile();
+				user.fireDelay = 0;
+			}
+			else user.fireDelay++;
+		}
 	}
 
 	private void fireProjectile() {
