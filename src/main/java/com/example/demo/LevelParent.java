@@ -29,6 +29,7 @@ public abstract class LevelParent extends Observable {
 	private final List<ActiveActorDestructible> enemyUnits;
 	private final List<ActiveActorDestructible> userProjectiles;
 	private final List<ActiveActorDestructible> enemyProjectiles;
+	private final List<ActiveActorDestructible> exploded;
 	
 	private int currentNumberOfEnemies;
 	private LevelView levelView;
@@ -42,6 +43,7 @@ public abstract class LevelParent extends Observable {
 		this.enemyUnits = new ArrayList<>();
 		this.userProjectiles = new ArrayList<>();
 		this.enemyProjectiles = new ArrayList<>();
+		this.exploded = new ArrayList<>();
 
 		this.background = new ImageView(new Image(getClass().getResource(backgroundImageName).toExternalForm()));
 		this.screenHeight = screenHeight;
@@ -156,8 +158,18 @@ public abstract class LevelParent extends Observable {
 	private void removeDestroyedActors(List<ActiveActorDestructible> actors) {
 		List<ActiveActorDestructible> destroyedActors = actors.stream().filter(actor -> actor.isDestroyed())
 				.collect(Collectors.toList());
-		root.getChildren().removeAll(destroyedActors);
+		destroyedActors.forEach(destroyedActor -> destroyedActor.destroy());
+		for (ActiveActorDestructible actor : destroyedActors) {
+			exploded.add(actor);
+		}
 		actors.removeAll(destroyedActors);
+		for (ActiveActorDestructible actor: exploded) {
+			if (actor.destructionFrames > 25){
+				root.getChildren().remove(actor);
+				//exploded.remove(actor);
+			}
+			else actor.destructionFrames++;
+		}
 	}
 
 	private void handlePlaneCollisions() {

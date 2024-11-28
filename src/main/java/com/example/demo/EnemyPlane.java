@@ -32,6 +32,7 @@ public class EnemyPlane extends FighterPlane {
 	@Override
 	public void updateActor() {
 		updatePosition();
+		if (this.getHealth() <= 0) this.destroy();
 	}
 
 }

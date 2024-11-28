@@ -1,8 +1,11 @@
 package com.example.demo;
 
+import javafx.scene.image.Image;
+
 public abstract class ActiveActorDestructible extends ActiveActor implements Destructible {
 
 	private boolean isDestroyed;
+	public int destructionFrames = 0;
 
 	public ActiveActorDestructible(String imageName, int imageHeight, double initialXPos, double initialYPos) {
 		super(imageName, imageHeight, initialXPos, initialYPos);
@@ -20,6 +23,7 @@ public abstract class ActiveActorDestructible extends ActiveActor implements Des
 	@Override
 	public void destroy() {
 		setDestroyed(true);
+		this.setImage(new Image(getClass().getResource("/com/example/demo/images/explode.png").toExternalForm()));
 	}
 
 	protected void setDestroyed(boolean isDestroyed) {
