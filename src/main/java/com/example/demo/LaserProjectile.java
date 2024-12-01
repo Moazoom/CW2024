@@ -3,7 +3,7 @@ package com.example.demo;
 public class LaserProjectile extends Projectile {
 
     private static final String IMAGE_NAME = "laser.png";
-    private static final int IMAGE_HEIGHT = 16;
+    private static final int IMAGE_HEIGHT = 20;
     private static final int HORIZONTAL_VELOCITY = -15;
 
     public LaserProjectile(double initialXPos, double initialYPos) {
