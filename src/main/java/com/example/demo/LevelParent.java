@@ -63,6 +63,8 @@ public abstract class LevelParent extends Observable {
 
 	protected abstract LevelView instantiateLevelView();
 
+	protected abstract void updateLevelView();
+
 	public Scene initializeScene() {
 		initializeBackground();
 		this.levelView = instantiateLevelView(); // pluhh
@@ -215,10 +217,6 @@ public abstract class LevelParent extends Observable {
 				enemy.destroy();
 			}
 		}
-	}
-
-	protected void updateLevelView() {
-		levelView.removeHearts(user.getHealth());
 	}
 
 	private void updateKillCount() {

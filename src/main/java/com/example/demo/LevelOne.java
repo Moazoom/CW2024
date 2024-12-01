@@ -9,6 +9,7 @@ public class LevelOne extends LevelParent {
 	private static final double ENEMY_SPAWN_PROBABILITY = .20;
 	private static final int PLAYER_INITIAL_HEALTH = 5;
 	private static boolean nextLevelStarted = false;
+	private LevelView levelView;
 
 	public LevelOne(double screenHeight, double screenWidth) {
 		super(BACKGROUND_IMAGE_NAME, screenHeight, screenWidth, PLAYER_INITIAL_HEALTH);
@@ -45,7 +46,13 @@ public class LevelOne extends LevelParent {
 
 	@Override
 	protected LevelView instantiateLevelView() {
-		return new LevelView(getRoot(), PLAYER_INITIAL_HEALTH);
+		levelView = new LevelView(getRoot(), PLAYER_INITIAL_HEALTH);
+		return levelView;
+	}
+
+	protected void updateLevelView() {
+		levelView.removeHearts(getUser().getHealth());
+		levelView.setTextDisplay("Kills: " + getUser().getNumberOfKills() + "/" + KILLS_TO_ADVANCE);
 	}
 
 	private boolean userHasReachedKillTarget() {
