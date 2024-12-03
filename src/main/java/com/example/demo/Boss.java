@@ -11,13 +11,13 @@ public class Boss extends FighterPlane {
 	private static final double BOSS_FIRE_RATE = .04;
 	private static final double BOSS_SHIELD_PROBABILITY = .002; // originally 0.002
 	private static final int IMAGE_HEIGHT = 55;
-	private static final int VERTICAL_VELOCITY = 8;
+	private static final int VERTICAL_VELOCITY = 10; // originally 8
 	private static final int HEALTH = 100;
 	private static final int MOVE_FREQUENCY_PER_CYCLE = 5;
 	private static final int ZERO = 0;
 	private static final int MAX_FRAMES_WITH_SAME_MOVE = 10;
-	private static final int Y_POSITION_UPPER_BOUND = -100;
-	private static final int Y_POSITION_LOWER_BOUND = 475;
+	private static final int Y_POSITION_UPPER_BOUND = 50;
+	private static final int Y_POSITION_LOWER_BOUND = 650;
 	private static final int MAX_FRAMES_WITH_SHIELD = 500;
 	private final List<Integer> movePattern;
 	private boolean isShielded;
@@ -38,7 +38,9 @@ public class Boss extends FighterPlane {
 	@Override
 	public void updatePosition() {
 		double initialTranslateY = getTranslateY();
-		moveVertically(getNextMove());
+		int move = getNextMove();
+		moveVertically(move);
+		setRotate(-move);
 		double currentPosition = getLayoutY() + getTranslateY();
 		if (currentPosition < Y_POSITION_UPPER_BOUND || currentPosition > Y_POSITION_LOWER_BOUND) {
 			setTranslateY(initialTranslateY);
@@ -58,11 +60,7 @@ public class Boss extends FighterPlane {
 	
 	@Override
 	public void takeDamage() {
-		if (!isShielded) {
-			super.takeDamage();
-			System.out.println("boss health: " + getHealth());
-		}
-		else System.out.println("boss is shielded");
+		if (!isShielded) super.takeDamage();
 	}
 
 	private void initializeMovePattern() {

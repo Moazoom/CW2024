@@ -66,7 +66,7 @@ public class CollisionHandler {
     }
 
     private boolean enemyHasPenetratedDefenses(ActiveActorDestructible enemy) {
-        return Math.abs(enemy.getTranslateX()) < user.getX();
+        return Math.abs(enemy.getTranslateX() + enemy.getLayoutX()) < user.getLayoutX() + user.getTranslateX();
     }
 
     private void removeAllDestroyedActors() {
