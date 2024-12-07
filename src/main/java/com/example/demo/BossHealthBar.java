@@ -3,9 +3,8 @@ package com.example.demo;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-
-import java.util.List;
 
 public class BossHealthBar{
 
@@ -31,6 +30,7 @@ public class BossHealthBar{
         textDisplay.setY(yPosition - 20);
         textDisplay.setScaleX(3);
         textDisplay.setScaleY(3);
+        textDisplay.setFill(Color.WHITE);
     }
 
     public void addToRoot(Group root){

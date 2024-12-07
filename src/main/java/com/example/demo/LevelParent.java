@@ -13,10 +13,10 @@ import javafx.util.Duration;
 
 public abstract class LevelParent extends Observable {
 
-	private static final int MILLISECOND_DELAY = 50;
+	private static final int MILLISECOND_DELAY = 50; // originally 50
 	private final double screenHeight;
 	private final double screenWidth;
-	private final double HEALTH_PICKUP_SPAWN_PROBABILITY = 0.005;
+	private final double HEALTH_PICKUP_SPAWN_PROBABILITY = 0.002;
 
 	private final Group root;
 	private final Timeline timeline;

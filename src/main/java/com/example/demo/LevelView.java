@@ -11,7 +11,7 @@ public class LevelView {
 	private static final int WIN_IMAGE_Y_POSITION = 175;
 	private static final int LOSS_SCREEN_X_POSITION = -160;
 	private static final int LOSS_SCREEN_Y_POSITION = -375;
-	private static final int TEXT_DISPLAY_X_POSITION = 1050;
+	private static final int TEXT_DISPLAY_X_POSITION = 1180;
 	private static final int TEXT_DISPLAY_Y_POSITION = 25;
 	private final Group root;
 	private final WinImage winImage;

@@ -7,30 +7,29 @@ public class Boss extends FighterPlane {
 	private static final String IMAGE_NAME = "bossplane.png";
 	private static final double INITIAL_X_POSITION = 1000.0;
 	private static final double INITIAL_Y_POSITION = 400;
-	private static final double PROJECTILE_Y_POSITION_OFFSET = 75.0;
-	private static final double BOSS_FIRE_RATE = .04;
-	private static final double BOSS_SHIELD_PROBABILITY = .002; // originally 0.002
+	private static final double PROJECTILE_Y_POSITION_OFFSET = 50.0;
+	private static double BOSS_FIRE_RATE = 0.04;
+	private static final double SPECIAL_ATTACK_PROBABILITY = 0.003;
 	private static final int IMAGE_HEIGHT = 55;
-	private static final int VERTICAL_VELOCITY = 10; // originally 8
+	private static final int VERTICAL_VELOCITY = 8; // originally 8
 	private static final int HEALTH = 100;
 	private static final int MOVE_FREQUENCY_PER_CYCLE = 5;
 	private static final int ZERO = 0;
 	private static final int MAX_FRAMES_WITH_SAME_MOVE = 10;
-	private static final int Y_POSITION_UPPER_BOUND = 50;
+	private static final int Y_POSITION_UPPER_BOUND = 100;
 	private static final int Y_POSITION_LOWER_BOUND = 650;
-	private static final int MAX_FRAMES_WITH_SHIELD = 500;
+	private static int specialAttackFrames = 0;
 	private final List<Integer> movePattern;
 	private boolean isShielded;
+	private boolean doSpecialAttack = false;
 	private int consecutiveMovesInSameDirection;
 	private int indexOfCurrentMove;
-	private int framesWithShieldActivated;
 
 	public Boss() {
 		super(IMAGE_NAME, IMAGE_HEIGHT, INITIAL_X_POSITION, INITIAL_Y_POSITION, HEALTH);
 		movePattern = new ArrayList<>();
 		consecutiveMovesInSameDirection = 0;
 		indexOfCurrentMove = 0;
-		framesWithShieldActivated = 0;
 		isShielded = false;
 		initializeMovePattern();
 	}
@@ -49,13 +48,16 @@ public class Boss extends FighterPlane {
 	
 	@Override
 	public void updateActor() {
-		updatePosition();
-		updateShield();
+		if (!doSpecialAttack) updatePosition();
+		specialAttack();
 	}
 
 	@Override
 	public ActiveActorDestructible fireProjectile() {
-		return bossFiresInCurrentFrame() ? new BossProjectile(getProjectileInitialPosition()) : null;
+		if (bossFiresInCurrentFrame()){
+			return new BossProjectile(getProjectileInitialPosition());
+		}
+		else return null;
 	}
 	
 	@Override
@@ -70,12 +72,6 @@ public class Boss extends FighterPlane {
 			movePattern.add(ZERO);
 		}
 		Collections.shuffle(movePattern);
-	}
-
-	private void updateShield() {
-		if (isShielded) framesWithShieldActivated++;
-		else if (shieldShouldBeActivated()) activateShield();	
-		if (shieldExhausted()) deactivateShield();
 	}
 
 	private int getNextMove() {
@@ -100,25 +96,52 @@ public class Boss extends FighterPlane {
 		return getLayoutY() + getTranslateY() + PROJECTILE_Y_POSITION_OFFSET;
 	}
 
-	private boolean shieldShouldBeActivated() {
-		return Math.random() < BOSS_SHIELD_PROBABILITY;
-	}
-
-	private boolean shieldExhausted() {
-		return framesWithShieldActivated == MAX_FRAMES_WITH_SHIELD;
-	}
-
 	private void activateShield() {
 		isShielded = true;
 	}
 
 	private void deactivateShield() {
 		isShielded = false;
-		framesWithShieldActivated = 0;
 	}
 
 	public boolean getShielded(){
 		return isShielded;
+	}
+
+	private void specialAttack(){
+		if (Math.random() < SPECIAL_ATTACK_PROBABILITY) doSpecialAttack = true;
+
+		if (doSpecialAttack){
+			specialAttackFrames++;
+			activateShield();
+			if (specialAttackFrames < 40){
+				double move = Y_POSITION_UPPER_BOUND - getLayoutY() - getTranslateY();
+				if (-5 < move && move < 5) specialAttackFrames = 39;
+				else specialAttackFrames--;
+				move = move / 10;
+				setRotate(-move);
+				moveVertically(move);
+				BOSS_FIRE_RATE = 0;
+			}
+			else if (specialAttackFrames < 100){
+				if (specialAttackFrames < 60 || 70 < specialAttackFrames) BOSS_FIRE_RATE = 1;
+				else BOSS_FIRE_RATE = 0;
+				moveVertically((Y_POSITION_LOWER_BOUND - Y_POSITION_UPPER_BOUND) / 60.0);
+				setRotate(0);
+			}
+			else if (specialAttackFrames < 160){
+				if (specialAttackFrames < 130 || 140 < specialAttackFrames) BOSS_FIRE_RATE = 1;
+				else BOSS_FIRE_RATE = 0;
+				moveVertically((Y_POSITION_LOWER_BOUND - Y_POSITION_UPPER_BOUND) / -60.0);
+			}
+			else{
+				doSpecialAttack = false;
+				specialAttackFrames = 0;
+				deactivateShield();
+				BOSS_FIRE_RATE = 0.04;
+			}
+
+		}
 	}
 
 }
