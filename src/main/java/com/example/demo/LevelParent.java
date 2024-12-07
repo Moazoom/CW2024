@@ -13,11 +13,10 @@ import javafx.util.Duration;
 
 public abstract class LevelParent extends Observable {
 
-	private static final double SCREEN_HEIGHT_ADJUSTMENT = 50;
 	private static final int MILLISECOND_DELAY = 50;
 	private final double screenHeight;
 	private final double screenWidth;
-	private final double enemyMaximumYPosition;
+	private final double HEALTH_PICKUP_SPAWN_PROBABILITY = 0.005;
 
 	private final Group root;
 	private final Timeline timeline;
@@ -31,7 +30,8 @@ public abstract class LevelParent extends Observable {
 	private final List<ActiveActorDestructible> userProjectiles;
 	private final List<ActiveActorDestructible> enemyProjectiles;
 	private final List<ActiveActorDestructible> exploded;
-	
+	private final List<ActiveActorDestructible> healthPickUps;
+
 	private int currentNumberOfEnemies;
 	private LevelView levelView;
 
@@ -46,14 +46,13 @@ public abstract class LevelParent extends Observable {
 		this.userProjectiles = new ArrayList<>();
 		this.enemyProjectiles = new ArrayList<>();
 		this.exploded = new ArrayList<>();
+		this.healthPickUps = new ArrayList<>();
 
-		this.collisionHandler = new CollisionHandler(root, user, friendlyUnits, enemyUnits, userProjectiles, enemyProjectiles, exploded);
+		this.collisionHandler = new CollisionHandler(root, user, friendlyUnits, enemyUnits, userProjectiles, enemyProjectiles, exploded, healthPickUps);
 
 		this.background = new ImageView(new Image(getClass().getResource(backgroundImageName).toExternalForm()));
 		this.screenHeight = screenHeight;
 		this.screenWidth = screenWidth;
-		this.enemyMaximumYPosition = screenHeight - SCREEN_HEIGHT_ADJUSTMENT;
-		// this.levelView = instantiateLevelView();
 		this.currentNumberOfEnemies = 0;
 		initializeTimeline();
 		friendlyUnits.add(user);
@@ -93,6 +92,8 @@ public abstract class LevelParent extends Observable {
 		userFire(); // new, mine
 		generateEnemyFire();
 		updateNumberOfEnemies();
+		spawnHealthPickups();
+		updateHealthPickups();
 		collisionHandler.CalculateCollision();
 		updateKillCount();
 		updateLevelView();
@@ -125,7 +126,6 @@ public abstract class LevelParent extends Observable {
 			}
 		});
 		root.getChildren().add(background);
-		System.out.println("bg added to root");
 	}
 
 	private void userFire(){
@@ -155,21 +155,39 @@ public abstract class LevelParent extends Observable {
 		}
 	}
 
+	protected void spawnHealthPickups() {
+		if (Math.random() < HEALTH_PICKUP_SPAWN_PROBABILITY) {
+			double newHeartInitialYPosition = (Math.random() * 550) + 50;
+			ActiveActorDestructible newHeart = new HealthPickUp(getScreenWidth(), newHeartInitialYPosition);
+			addHealthPickUp(newHeart);
+		}
+	}
+
+	protected void updateHealthPickups(){
+		List <ActiveActorDestructible> toRemove = new ArrayList<>();
+		for (ActiveActorDestructible heart : healthPickUps){
+			if (heart.isDestroyed()){
+				toRemove.add(heart);
+				root.getChildren().remove(heart);
+				levelView.addHeart();
+				user.incrementHealth();
+			}
+		}
+		healthPickUps.removeAll(toRemove);
+	}
+
 	private void updateActors() {
 		friendlyUnits.forEach(plane -> plane.updateActor());
 		enemyUnits.forEach(enemy -> enemy.updateActor());
 		userProjectiles.forEach(projectile -> projectile.updateActor());
 		enemyProjectiles.forEach(projectile -> projectile.updateActor());
+		healthPickUps.forEach(projectile -> projectile.updateActor());
 	}
 
 	private void updateKillCount() {
 		for (int i = 0; i < currentNumberOfEnemies - enemyUnits.size(); i++) {
 			user.incrementKillCount();
 		}
-	}
-
-	private boolean enemyHasPenetratedDefenses(ActiveActorDestructible enemy) {
-		return Math.abs(enemy.getTranslateX()) > screenWidth;
 	}
 
 	protected void winGame() {
@@ -199,8 +217,9 @@ public abstract class LevelParent extends Observable {
 		root.getChildren().add(enemy);
 	}
 
-	protected double getEnemyMaximumYPosition() {
-		return enemyMaximumYPosition;
+	protected void addHealthPickUp(ActiveActorDestructible heart) {
+		healthPickUps.add(heart);
+		root.getChildren().add(heart);
 	}
 
 	protected double getScreenWidth() {

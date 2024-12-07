@@ -12,12 +12,10 @@ public class ShieldImage extends ImageView {
 	public ShieldImage(double xPosition, double yPosition) {
 		this.setLayoutX(xPosition);
 		this.setLayoutY(yPosition);
-		//this.setImage(new Image(IMAGE_NAME));
 		this.setImage(new Image(getClass().getResource(IMAGE_NAME).toExternalForm()));
 		this.setVisible(false);
 		this.setFitHeight(SHIELD_HEIGHT);
 		this.setFitWidth(SHIELD_WIDTH);
-		System.out.println("shield created");
 	}
 
 	public void showShield() {

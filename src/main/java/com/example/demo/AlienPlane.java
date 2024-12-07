@@ -9,6 +9,8 @@ public class AlienPlane extends FighterPlane {
     private static final double PROJECTILE_Y_POSITION_OFFSET = 10;
     private static final int INITIAL_HEALTH = 1;
     private static final double FIRE_RATE = .01;
+    private final double RANDOM = Math.random();
+
 
     public AlienPlane(double initialXPos, double initialYPos) {
         super(IMAGE_NAME, IMAGE_HEIGHT, initialXPos, initialYPos, INITIAL_HEALTH);
@@ -17,7 +19,7 @@ public class AlienPlane extends FighterPlane {
     @Override
     public void updatePosition() {
         moveHorizontally(HORIZONTAL_VELOCITY);
-        moveVertically(Math.sin((this.getLayoutX() + this.getTranslateX()) / 100) * 5);
+        moveVertically(Math.sin((this.getLayoutX() + this.getTranslateX()) / 50 * RANDOM) * 3);
     }
 
     @Override

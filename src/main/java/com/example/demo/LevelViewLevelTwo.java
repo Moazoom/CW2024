@@ -8,7 +8,7 @@ public class LevelViewLevelTwo extends LevelView {
 	private static final int SHIELD_Y_POSITION = 300;
 	private final Group root;
 	private final ShieldImage shieldImage;
-	private static BossHealthBar healthBar = new BossHealthBar();
+	private static final BossHealthBar healthBar = new BossHealthBar();
 	
 	public LevelViewLevelTwo(Group root, int heartsToDisplay) {
 		super(root, heartsToDisplay);
@@ -19,18 +19,15 @@ public class LevelViewLevelTwo extends LevelView {
 	
 	private void addImagesToRoot() {
 		root.getChildren().addAll(shieldImage);
-		root.getChildren().addAll(healthBar.getImages());
-		System.out.println("shield added to root");
+		healthBar.addToRoot(root);
 	}
 	
 	public void showShield() {
 		shieldImage.showShield();
-		System.out.println("shield is up");
 	}
 
 	public void hideShield() {
 		shieldImage.hideShield();
-		System.out.println("shield down");
 	}
 
 	public void moveShieldTo(double y){

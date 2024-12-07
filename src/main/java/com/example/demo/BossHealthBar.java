@@ -1,7 +1,9 @@
 package com.example.demo;
 
+import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
 
 import java.util.List;
 
@@ -11,6 +13,7 @@ public class BossHealthBar{
     private static final String BORDER_IMAGE_NAME = "/com/example/demo/images/healthBorder.png";
     private static ImageView healthBar;
     private static ImageView healthBorder;
+    private final Text textDisplay;
     public int xPosition = 85;
     public int yPosition = 85;
     private double originalWidth;
@@ -23,15 +26,19 @@ public class BossHealthBar{
         healthBorder.setX(xPosition);
         healthBorder.setY(yPosition);
         originalWidth = healthBar.getBoundsInLocal().getWidth();
+        this.textDisplay = new Text("BOSS HEALTH");
+        textDisplay.setX(xPosition + 545);
+        textDisplay.setY(yPosition - 20);
+        textDisplay.setScaleX(3);
+        textDisplay.setScaleY(3);
     }
 
-    public List<ImageView> getImages(){
-        return List.of(healthBorder, healthBar);
+    public void addToRoot(Group root){
+        root.getChildren().addAll(healthBorder, healthBar, textDisplay);
     }
 
     public void setHealth(double health){
         health = health / 100;
         healthBar.setFitWidth(health * originalWidth);
-        System.out.println("set health to " + health);
     }
 }
