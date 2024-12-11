@@ -1,5 +1,8 @@
 package com.example.demo;
 
+/**
+ * This is the class for the players plane.
+ */
 public class UserPlane extends FighterPlane {
 
 	private static final String IMAGE_NAME = "userplane.png";
@@ -17,12 +20,19 @@ public class UserPlane extends FighterPlane {
 	public boolean isFiring = false;
 	public int fireDelay = 0;
 
+	/**
+	 * Initial health value is provided by the level class.
+	 * @param initialHealth initial health value input.
+	 */
 	public UserPlane(int initialHealth) {
 		super(IMAGE_NAME, IMAGE_HEIGHT, INITIAL_X_POSITION, INITIAL_Y_POSITION, initialHealth);
 		velocityMultiplier = 0;
 		numberOfKills = 0;
 	}
-	
+
+	/**
+	 * Moves the player up or down depending on the key inputs. Also caps the movement at a maximum and minimum height.
+	 */
 	@Override
 	public void updatePosition() {
 		if (isMoving()) {
@@ -34,12 +44,19 @@ public class UserPlane extends FighterPlane {
 			}
 		}
 	}
-	
+
+	/**
+	 * Calls updatePosition().
+	 */
 	@Override
 	public void updateActor() {
 		updatePosition();
 	}
-	
+
+	/**
+	 * fires a projectile
+	 * @return returns the projectile after it is fired.
+	 */
 	@Override
 	public ActiveActorDestructible fireProjectile() {
 		return new UserProjectile(PROJECTILE_X_POSITION, getProjectileYPosition(PROJECTILE_Y_POSITION_OFFSET));
@@ -49,25 +66,41 @@ public class UserPlane extends FighterPlane {
 		return velocityMultiplier != 0;
 	}
 
+	/**
+	 * Moves the user plane upwards, also rotates it slightly.
+	 */
 	public void moveUp() {
 		velocityMultiplier = -1;
 		setRotate(-MOVEMENT_ROTATION);
 	}
 
+	/**
+	 * Moves the user plane downwards, also rotates it slightly.
+	 */
 	public void moveDown() {
 		velocityMultiplier = 1;
 		setRotate(MOVEMENT_ROTATION);
 	}
 
+	/**
+	 * Sets the user planes vertical velicoity to 0 and also sets its rotation angle to 0.
+	 */
 	public void stop() {
 		velocityMultiplier = 0;
 		setRotate(0);
 	}
 
+	/**
+	 * gets the number of kills
+	 * @return number of kills
+	 */
 	public int getNumberOfKills() {
 		return numberOfKills;
 	}
 
+	/**
+	 * increases the kill counter by one.
+	 */
 	public void incrementKillCount() {
 		numberOfKills++;
 	}

@@ -1,5 +1,8 @@
 package com.example.demo;
 
+/**
+ * This is the third level, the boss level.
+ */
 public class LevelBoss extends LevelParent {
 
 	private static final String BACKGROUND_IMAGE_NAME = "/com/example/demo/images/background3.jpg";
@@ -12,11 +15,17 @@ public class LevelBoss extends LevelParent {
 		boss = new Boss();
 	}
 
+	/**
+	 * Initialises User
+	 */
 	@Override
 	protected void initializeFriendlyUnits() {
 		getRoot().getChildren().add(getUser());
 	}
 
+	/**
+	 * Checks if the boss or user has died, and shows the wingame or losegame image respectively.
+	 */
 	@Override
 	protected void checkIfGameOver() {
 		if (userIsDestroyed()) {
@@ -27,6 +36,9 @@ public class LevelBoss extends LevelParent {
 		}
 	}
 
+	/**
+	 * Spawns the boss.
+	 */
 	@Override
 	protected void spawnEnemyUnits() {
 		if (getCurrentNumberOfEnemies() == 0) {
@@ -34,12 +46,19 @@ public class LevelBoss extends LevelParent {
 		}
 	}
 
+	/**
+	 * Created a new LevelViewLevelBoss
+	 * @return Returns the new levelview.
+	 */
 	@Override
 	protected LevelView instantiateLevelView() {
 		levelView = new LevelViewLevelBoss(getRoot(), PLAYER_INITIAL_HEALTH);
 		return levelView;
 	}
 
+	/**
+	 * Updates the levelView, including the heart display, the boss's shield as well as the boss's health bar.
+	 */
 	@Override
 	protected void updateLevelView() {
 		levelView.removeHearts(getUser().getHealth());
