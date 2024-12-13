@@ -61,7 +61,7 @@ Small changes I made to improve the feel of the game, including:
 - Faster bullets for player
 - Smaller bullets for some enemies
 - Accelerating bullets for the boss
-- Spawning logic is changed to provide a smooth stream of enemies, as well as making sure 
+- Changed spawning logic to provide a smooth stream of enemies, as well as making sure 
 there is always at least one enemy on screen
 - Adjusted maximum and minimum Y values, for all fighter planes.
 - Adjusted projectile offsets for all fighter planes to make them more accurate
@@ -84,6 +84,10 @@ I was not sure on how or where to save the data, I don't have enough experience 
 Again it was lack of experience, I did not understand how to control the JavaFX timeline and 
 that was enough to scare me off from working on this feature, since I was worried that I would break the game in crazy
 ways.
+
+### JUnit testing
+I spent a lot of time trying to get JUnit testing to work properly but I couldn't. The fact that all the classes need 
+some kind of JavaFX stage and window already open and running made unit testing very difficult.
 
 ## New Java Classes
 ### LevelTwo
@@ -114,6 +118,7 @@ New logic was added to allow for the destruction frames to appear, as well as to
 
 ### Boss
 A new special attack was added, and shield logic was changed. The projectile offset was also tweaked to make it more accurate.
+New Maximum and Minimum Y values were made.
 
 ### BossProjectile
 The velocity is now increased every frame, causing the projectile to accelerate.
@@ -136,7 +141,7 @@ Renamed from LevelTwo. New logic to allow the shield to show and to move the shi
 Overrode the updateLevelView() method  from LevelParent() to allow the class to show and hide the shield.
 
 ### LevelParent
-All collision logic moved to the CollisionHandler class. New logic added for tbe user continuously firing, as well as for the 
+All collision logic moved to the CollisionHandler class. New logic added for the user continuously firing, as well as for the 
 health pick-ups. Changed when levelView is initialised to allow for elements to be added to root after the background 
 has been added. Made updateLevelView() into an abstract method so that each level could manage its HUD separately. 
 Also removed useless commented code.
@@ -151,7 +156,7 @@ Renamed from LevelViewLevelTwo. New logic added for the boss health bar as well 
 Fixed a bad filename which was causing an error upon entering the boss level. Removed useless commented code.
 
 ### UserPlane
-Adjusted speed for more fun gameplay.
+Adjusted speed for more fun gameplay. New maximum and minimum Y values were made.
 
 ### UserProjectile
 Adjusted speed and size for more fun gameplay.
@@ -164,3 +169,8 @@ Adding the health pick-up was easy, but making it increment the players health a
 especially before I realised how the removeHeart() method worked, and that it was called each frame. I also had
 problems where the first levels heartDisplay was invisible but still loaded and any new hearts picked up would be added 
 to that instead. I did eventually fix both these issues.
+
+Another problem that I faced that I couldn't resolve was JUnit testing. The fact that this project
+had most of its classes dependent on JavaFX set up made the tests difficult to set up, and also I
+struggled to come up with good tests to perform. Most of the errors that could happen were in parts
+of the code that would throw exceptions anyways. In the end I couldn't implement JUnit testing.
